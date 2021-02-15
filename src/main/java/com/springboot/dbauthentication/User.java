@@ -1,11 +1,8 @@
 package com.springboot.dbauthentication;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +27,16 @@ public class User implements UserDetails {
 	private String username;
 
 	private String password;
+
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	/**
 	 * @return the id
@@ -74,11 +81,17 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public Set<GrantedAuthority> getAuthorities() {
-		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("USER"));
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+
+			authorities.add(new SimpleGrantedAuthority(role));
+
+
 		return authorities;
 	}
+
 
 	@Override
 	public boolean isAccountNonExpired() {
